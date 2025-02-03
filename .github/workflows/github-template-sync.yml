@@ -4,8 +4,8 @@ on:
   # manual trigger
   workflow_dispatch:
   # cronjob trigger
-  schedule:
-    - cron: '0 * * * *'
+#  schedule:
+#    - cron: '0 * * * *'
 
 env:
   SOURCE_BRANCH: 'main'
