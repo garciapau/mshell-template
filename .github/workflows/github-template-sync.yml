@@ -1,11 +1,11 @@
 name: mshell-template-sync
 
 on:
+  # cronjob trigger
+  schedule:
+    - cron: "0 0 1 * *"
   # manual trigger
   workflow_dispatch:
-  # cronjob trigger
-#  schedule:
-#    - cron: '0 * * * *'
 
 env:
   SOURCE_BRANCH: 'main'
@@ -14,6 +14,9 @@ env:
 jobs:
   repo-sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout
@@ -25,7 +28,7 @@ jobs:
 
       # Doc: https://github.com/marketplace/actions/actions-template-sync
       - name: actions-template-sync
-        uses: AndreasAugustin/actions-template-sync@v2
+        uses: AndreasAugustin/actions-template-sync@v2.5.0
         if: github.repository != env.SOURCE_REPOSITORY
         with:
           source_repo_path: ${{ env.SOURCE_REPOSITORY }}
@@ -33,3 +36,4 @@ jobs:
           pr_title: "[actions-template-sync] Upstream template update"
           pr_commit_msg: "chore(template): upstream template update"
           pr_labels: 'mshell-template-sync'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
